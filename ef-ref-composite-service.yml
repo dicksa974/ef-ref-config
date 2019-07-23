@@ -1,0 +1,49 @@
+# Disable Spring Cloud and Zipkin
+spring:
+  cache:
+    caffeine:
+      spec: expireAfterAccess=30s,maximumSize=1000
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: venuetopic
+          content-type: application/json
+          resetOffsets: true
+      kafka:
+        binder:
+          brokers: ${KAFKA_HOSTS}
+  zipkin:
+    enabled: false
+
+zuul:
+  ignoredServices: '*'
+  sensitiveHeaders: Authorization
+  routes:
+    venues:
+      path: /venues/**
+      serviceId: ef-ref-venue-service
+    reservations:
+      path: /reservations/**
+      serviceId: ef-ref-reservation-service
+
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      enabled: false
+  zipkin:
+    enabled: false
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://ef-ref-config-service:8080
+      fail-fast: true

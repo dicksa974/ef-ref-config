@@ -1,0 +1,26 @@
+zuul:
+  ignoredServices: '*'
+  sensitiveHeaders: Authorization
+  routes:
+    shipwright:
+      path: /fisac/**
+      serviceId: ef-ref-composite-service
+
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
+
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://ef-ref-config-service:8080
+      fail-fast: true

@@ -1,0 +1,47 @@
+server:
+  port: 8761
+
+management:
+  port: ${server.port}
+  context-path: /admin
+  info.git.mode: full
+  security.enabled: false
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+###
+# Logging Configuration
+###
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+      hibernate: ERROR
+    com.example: INFO
+  file: ./log/application.log
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    service-url: http://ef-ref-eureka-service:8761/eureka/
+
+---
+spring:
+  profiles: local
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

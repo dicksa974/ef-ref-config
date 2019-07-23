@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    initialize: false
+  sleuth:
+    enabled: false
+
+zipkin:
+  store:
+    type: mem
